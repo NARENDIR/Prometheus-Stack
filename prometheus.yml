@@ -1,0 +1,19 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+alerting_rules:
+  - groups:
+    - name: 'High CPU Usage'
+      rules:
+        - expr: node_load1 > 0.8
+          for: 5m
+          labels:
+            severity: high
+          annotations:
+            summary: 'High CPU Usage Detected on {{ instance }}'
+            description: 'CPU load on {{ instance }} has been above 80% for 5 minutes. Investigate immediately.'

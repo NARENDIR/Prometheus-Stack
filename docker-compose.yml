@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  # Prometheus service
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - 9090:9090
+
+  # Grafana service
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - ./grafana-datasources.yaml:/etc/grafana/grafana.datasources.yaml
+    ports:
+      - 3000:3000
+
+  # Node Exporter service
+  node-exporter:
+    image: prom/node-exporter
+    ports:
+      - 9100:9100
+
+# Define volumes for persistence (optional)
+volumes:
+  prometheus_data:
